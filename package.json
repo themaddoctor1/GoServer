@@ -1,0 +1,29 @@
+{
+  "name": "goserver",
+  "version": "1.0.0",
+  "description": "A server that allows players to host and play Go matches.",
+  "main": "server.js",
+  "dependencies": {
+    "socket.io": "^1.7.3",
+    "express"  : "^4.15.2",
+    "node-opus": "^0.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themaddoctor1/GoServer.git"
+  },
+  "keywords": [
+    "go",
+    "game",
+    "server"
+  ],
+  "author": "Christopher Hittner",
+  "bugs": {
+    "url": "https://github.com/themaddoctor1/GoServer/issues"
+  },
+  "homepage": "https://github.com/themaddoctor1/GoServer#readme"
+}

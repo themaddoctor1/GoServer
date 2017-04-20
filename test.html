@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Hello world</title></head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/goban.js"></script>
+    <script>
+        var socket = io();
+        
+        socket.on('connect_failed', function() {
+            document.write("Sorry, there seems to be an issue with the connection!");
+        });
+
+    </script>
+    <body>
+        <h1>Fuck</h1>
+    </body>
+</html>

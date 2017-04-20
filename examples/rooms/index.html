@@ -1,0 +1,18 @@
+<html>
+    <head><title>Hello world</title></head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        socket.on('connectToRoom',function(data){
+            document.body.innerHTML = '';
+            document.write(data);
+        });
+
+        socket.on('connect_failed', function() {
+            document.write("Sorry, there seems to be an issue with the connection!");
+        });
+
+    </script>
+    <body>Hello world</body>
+</html>
+

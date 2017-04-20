@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head><title>SourceGo</title></head>
+    <link href="/stylesheet.css" type="text/css" rel="stylesheet" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/goban.js"></script>
+    <script>
+        var socket = io();
+        var username;
+
+        //Game data
+        var board;
+        var score;
+
+        //Send login credentials
+        function sendLogin() {
+            socket.emit('login', {
+                'username' : document.getElementById('username').value,
+                'password' : document.getElementById('password').value
+            });
+        };
+
+        function reqNewAcct() {
+            socket.emit('signup', {
+                'username' : document.getElementById('username').value,
+                'password' : document.getElementById('password').value
+            });
+        }
+
+        socket.on('login_succ',function(data){
+            username = data.username;
+            document.body.innerHTML = data.html;
+            requestRoomListing();
+        });
+
+        socket.on('login_err', function(data) {
+            document.getElementById('errormssg').innerHTML = 'Invalid credentials; try again.';
+        });
+
+        //Request and receive available room listings
+        function requestRoomListing() {
+            socket.emit('req_open_rooms');
+        };
+        //Automate for request every five seconds
+        window.setInterval(function() {
+            if (document.getElementById('opengamelist') != null) {
+                requestRoomListing();
+            }
+        }, 5000);
+
+        socket.on('open_room_list', function(data) {
+            var elem = document.getElementById('opengamelist');
+
+            var table  = '<table class="gamelist"><tr>'
+                       + '<th>Match</th>'
+                       + '<th>Player</th>'
+                       + '<th></th></tr>';
+            for (var i = 0; i < data.length; i++) {
+                var matchLabel  = "<td>" + data[i].roomname + "</td>";
+                var nameLabel   = "<td>" + data[i].opponent + "</td>";
+                var buttonTag = '<td><button name=\'join_' + data[i].roomname + '\' onclick="';
+                    buttonTag += 'socket.emit(\'join_room\', {\'roomname\' : \'';
+                    buttonTag += data[i].roomname + '\'});">';
+                    buttonTag += 'Join</button></td>';
+                table += '<tr>' + matchLabel + nameLabel + buttonTag + '</tr>';
+            }
+            table += '</table>';
+            elem.innerHTML = table;
+        });
+
+        //Host a game
+        function sendHostRequest() {
+            socket.emit('host_room', {'roomname' : document.getElementById('host').value});
+        };
+        socket.on('host_room_err', function(data) {
+            document.getElementById('errormssg').innerHTML = data;
+        });
+        socket.on('host_room_succ', function(data) {
+            document.body.innerHTML = data.html;
+        });
+
+
+        //Join a game
+        function sendJoinRequest() {
+            socket.emit('join_room', {'roomname' : document.getElementById('join').value});
+        }
+        socket.on('join_room_err', function(data) {
+            document.getElementById('errormssg').innerHTML = data.description;
+        });
+        socket.on('join_room_succ', function(data) {
+            document.body.innerHTML = data.html;
+            initBoard(data.players);
+        });
+
+        //Make a move
+        function makeMove(x, y) {
+            socket.emit('player_move', {'pass' : false, 'x' : x, 'y' : y});
+        };
+        //Pass turn
+        function passMove() {
+            socket.emit('player_move', {'pass' : true});
+        }
+
+        //New game data
+        socket.on('game_update', function(data) {
+            //Update the board
+            addGameLogEntry(data.lastmove);
+            setBoardState(data.board, data.score, data.turn);
+        });
+
+        //Leave a game
+        function quitGameRequest() {
+            socket.emit('leave_room');
+        };
+        socket.on('leave_room_succ', function(data) {
+            document.body.innerHTML = data.html;
+            requestRoomListing();
+        });
+
+        socket.on('connect_failed', function() {
+            document.body.innerHTML = 'Sorry, there seems to be an issue with the connection!';
+        });
+
+        socket.on('disconnect', function () {
+            document.body.innerHTML = 'The connection between the server and client has been severed.';
+        });
+
+    </script>
+    <body>
+        <h1>Login</h1>
+        <div id="errormssg">Please provide login information.</div>
+        <section class="loginpanel">
+            <input id="username" type="text" name="username" value="" placeholder=""></input>
+            <button type="button" name="login" onclick="reqNewAcct()">Sign up</button>
+            <br />
+            <input id="password" type="text" name="password" value="" placeholder=""></input>
+            <button type="button" name="signup" onclick="sendLogin()">Login</button>
+        </section>
+    </body>
+</html>
+

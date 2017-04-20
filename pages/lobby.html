@@ -1,0 +1,22 @@
+<h1>Lobby</h1>
+<div id="errormssg">Please select or create a match.</div> 
+
+<section class="lobbyquickpanel">
+    <form id="lobbyquickrow" onsubmit="sendHostRequest();">
+        <input id="host" type="text" name="hostgamename" value="" placeholder=""></input>
+        <button type="button" name="hostgame" onclick="sendHostRequest();">Host</button>
+    </form>
+    
+    <br />
+
+    <form id="lobbyquickrow" onsubmit="sendJoinRequest();">
+        <input id="join" type="text" name="joingamename" value="" placeholder=""></input>
+        <button type="button" name="joingame" onclick="sendJoinRequest();">Join</button>
+    </form>
+    
+    <br />
+
+    <button type="button" name="refreshlist" onclick="requestRoomListing();">Refresh</button>
+</section>
+
+<div id="opengamelist">No games to show</div>

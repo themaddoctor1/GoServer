@@ -1,0 +1,91 @@
+* {}
+
+h1, h2 {
+    text-align: center;
+}
+
+body {
+}
+
+#errormssg {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.loginpanel {
+    list-style-type: none;
+    margin: 10px auto;
+    padding: 10px;
+    overflow: hidden;
+    text-align: center;
+    
+    width: 16em;
+
+    background-color: #eee;
+}
+
+.loginpanel * {
+    float: left;
+}
+
+.loginpanel button {
+    width: 5em;
+}
+
+.lobbyquickpanel {
+    list-style-type: none;
+    margin: auto;
+    padding: 10px 20px;
+    overflow: hidden;
+    text-align: center;
+    
+    width: 16em;
+
+    background-color: #eee;    
+
+}
+
+.lobbyquickpanel button {
+    float: right;
+}
+
+#lobbyquickrow {
+    display: block;
+    margin: 0;
+    height: 1.5em;
+}
+
+#lobbyquickrow input {
+    float: left;
+}
+
+#lobbyquickrow button {
+    float: right;
+}
+
+#opengamelist {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.gamelist {
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+.gamelist td,th {
+    width: 8em;
+    margin: 0;
+    padding: 5px;
+}
+
+.gamelist th {
+    border-bottom: 1px solid #ccc;
+}
+
+.gamelist tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
